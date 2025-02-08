@@ -1,54 +1,27 @@
+from flask import Flask, Response
+import cv2
 import mss
 import numpy as np
-import cv2
 
-class ScreenCapture:
-    def __init__(self, region=None):
-        """
-        Initialize the ScreenCapture class.
-        :param region: Tuple (left, top, width, height) specifying the screen region to capture.
-        """
-        self.sct = mss.mss()
-        self.region = region if region else self._get_default_region()
-    
-    def _get_default_region(self):
-        """
-        Set a default region for screen capture if none is provided.
-        This region is a placeholder representing a typical WhatsApp call window.
-        Modify the coordinates as needed to match your WhatsApp window.
-        """
-        return {"top": 100, "left": 100, "width": 640, "height": 480}
-    
-    def capture_frame(self):
-        """
-        Capture a single frame from the specified screen region.
-        :return: Frame as a numpy array in BGR format.
-        """
-        frame = self.sct.grab(self.region)
-        img = np.array(frame)
-        return cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+app = Flask(__name__)
+screen_capture = mss.mss()
+region = {"top": 100, "left": 100, "width": 640, "height": 480}  # Adjust as needed
 
-    def release(self):
-        """Release resources (not strictly necessary with mss)."""
-        self.sct.close()
-
-
-# For testing this script independently
-if __name__ == "__main__":
-    # Create the screen capture object with a specific region
-    screen_capture = ScreenCapture(region={"top": 100, "left": 100, "width": 640, "height": 480})
-    
-    print("Capturing frames from the specified screen region...")
-    
+def generate_frames():
     while True:
-        frame = screen_capture.capture_frame()
-        
-        # Display the frame in a window
-        cv2.imshow("Screen Capture (WhatsApp Call)", frame)
-        
-        # Exit on pressing 'q'
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    
-    screen_capture.release()
-    cv2.destroyAllWindows()
+        frame = screen_capture.grab(region)
+        img = np.array(frame)
+        img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+
+        _, buffer = cv2.imencode('.jpg', img)
+        frame_bytes = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
