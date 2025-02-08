@@ -1,3 +1,4 @@
+#logic inspired by prior project
 screen_width = 640
 screen_height = 480
 
