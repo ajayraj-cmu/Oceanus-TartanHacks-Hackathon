@@ -9,6 +9,8 @@ import torch
 from transformers import pipeline
 from ultralytics import YOLO
 from segment_anything import SamPredictor, sam_model_registry
+from sender import ScreenCapture
+
 
 # --------------------------------------------------
 # Optimization settings for CPU-based processing
@@ -187,9 +189,17 @@ def main():
     speak_mac(f"Perfect! Let's go find your '{target_obj}'")
     TIME_SPEAK_INTERVAL = 0.75
 
-    # Instead of using the webcam, open an MP4 (or MOV) file.
-    video_file = "video-160_singular_display.mov"  # <-- Change this to your video file path.
-    cap = cv2.VideoCapture(video_file)
+    #
+   # Initialize the screen capture object for WhatsApp call window
+    screen_capture = ScreenCapture(region={"top": 200, "left": 300, "width": 800, "height": 600})
+
+    # Capture a frame from the WhatsApp call
+    frame = screen_capture.capture_frame()
+
+    # Process or display the frame in your main pipeline
+    cv2.imshow("Captured WhatsApp Frame", frame)
+    #Should be screen capture from the whatsapp video call to the meta glasses
+    cap = screen_capture
     if not cap.isOpened():
         print("Error: Could not open video file.")
         return
