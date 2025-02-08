@@ -67,9 +67,7 @@
       <br>
       <br>
       <p class="lead">
-        In the Bible, Jesus gave the blind Bartimaeus the ability to see. We want to provide blind individuals with the ability of spatial navigation through the help of an audio agent that gives verbal commands on how to move toward an arbitrarily chosen object. 
-        This interface is run using a phone camera pointed at a field of view, and we allow for auditory cues from the user to identify what object within their peripheral they would like to procure. 
-      </p>
+       In Greek Mythology, Oceanus was the Titan God of the Ocean, one with the ability to fluidly navigate across tides. We at Oceanus desire to provide an interface run locally on a the Meta x Ray-Bans glasses to provide spatial navigation to those with visual impairments and/or Alzheimers.
     </section>
 
     <section>
@@ -82,24 +80,25 @@
   <br>
     <br>
     <p class="lead">Through YOLO and OpenCV (Hugging Face Visual Transformer) we identify the closest object of that type, and enclose it with a bounding box. 
-      Then, we utilize two zero-shot learning models (depth anything and SAM) and a novel mathematical path-finding algorithm we developed to provide audio cues to the user moving through legal motion (paths without obstacles in the way aligned toward the target object/location).</p>
+      Then, we utilize two zero-shot learning models (depth anything and SAM) and a novel mathematical path-finding algorithm we developed to provide audio cues to the user moving through legal motion (paths without obstacles in the way aligned toward the target object/location). With this interface running on the Meta x Ray Bans glasses, we also have developed a memory collection software that captures the last relevant locations that key items were placed by an individual (we use a multi-modal model to help individuals navigate back to where they left these items).</p>
+      
   
     </section>
 <br>
 <section>
   <h2 class="section-title h3">Demo Videos</h2>
-  <p class class="lead">We've performed extensive tests on the accuracy of our model (from a computer vision and trajectory planning perspective) in order to determine its robustness. Below, we display 4 general cases of indoor-assisted navigation.</p>
+  <p class class="lead">We've performed extensive tests on the accuracy of our model (from a computer vision and trajectory planning perspective) in order to determine its robustness. Below, we display 5 general cases of indoor-assisted navigation.</p>
   <br>
   <div class="row">
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Navigation to a water bottle in front of us.</p>
+        <p class="section-title h4">Acquiring Object from Crowded Desk</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/-SC_iIAPzRs" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Finding a chair with a backpack in the middle.</p>
+        <p class="section-title h4">Navigtation back to Forgotten Item (Memory Collection).</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/BnmX3R-8sSo" allowfullscreen></iframe>
       </div>
     </div>
@@ -108,13 +107,13 @@
   <div class="row">
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Finding a chair that isn't in our current frame.</p>
+        <p class="section-title h4">Object is not in Room View.</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/a-LPRGOKDtU" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">An object is not in our environment.</p>
+        <p class="section-title h4">Navigation to Forgotten Item Through Crowded Room (Spatial Navigation + Memory Collection).</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/mnuehPIrcvg" allowfullscreen></iframe>
       </div>
     </div>
