@@ -43,9 +43,9 @@ class TranscribeStream:
     def parse_command(self, text):
         """Extract object name from command text"""
         patterns = [
-            r"where is my (.+?)[\.\?]?$",
-            r"locate (.+?)[\.\?]?$",
-            r"find (.+?)[\.\?]?$"
+            r"Hey Oceanus, where is my (.+?)[\.\?]?$",
+            r"Hey Oceanus, locate (.+?)[\.\?]?$",
+            r"Hey Oceanus, find (.+?)[\.\?]?$"
         ]
         
         for pattern in patterns:
