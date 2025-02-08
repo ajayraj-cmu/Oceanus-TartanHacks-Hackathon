@@ -152,6 +152,7 @@ def main():
         # --- Dummy Path Planning ---
         move, location = dummy_pathfinder(data, target_obj)
         # (You can add logic to compare initial depth/area thresholds here.)
+        if location==None : speak_mac("Object not found. Try checking your pockets or another room.")
         
         interval_time += time.time() - start_time
         if interval_time > TIME_SPEAK_INTERVAL:
