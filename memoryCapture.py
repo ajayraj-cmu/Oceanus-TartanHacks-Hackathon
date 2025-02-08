@@ -7,11 +7,13 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 from sender import ScreenCapture  # Importing ScreenCapture from sender.py
+import openai  # Ensure you have the OpenAI client installed
 
 # Configuration
 TRACKED_ITEMS = ["person", "bottle", "laptop"]  # Add more items to track here
 JSON_UPDATE_INTERVAL = 3  # Update JSON every 3 seconds
 MODEL = "gpt-4-vision-preview"
+openai.api_key = "YOUR_API_KEY"  # Replace with your OpenAI API key
 
 def encode_frame_to_base64(frame):
     """Convert CV2 frame to base64 string."""
@@ -22,50 +24,52 @@ def encode_frame_to_base64(frame):
     img_str = base64.b64encode(buffered.getvalue()).decode()
     return img_str
 
-def detect_items(frame, frame_time):
-    """Detect items using GPT-4V API (simulated in this example)."""
+def detect_items_with_gpt4(frame, frame_time):
+    """Send frame to GPT-4 and get object descriptions."""
     image_base64 = encode_frame_to_base64(frame)
-    
-    # Simulated response for testing purposes
-    response_content = '''
-    {
-        "person": {
-            "position": [150, 200],
-            "confidence": 0.95,
-            "description": "Near the center of the frame"
-        },
-        "bottle": {
-            "position": [300, 400],
-            "confidence": 0.90,
-            "description": "On the right side"
-        }
-    }
-    '''
+    prompt = (
+        f"If any of the following objects are located in this image: {', '.join(TRACKED_ITEMS)}, "
+        "please describe their position in relation to other objects in the setting. "
+        "Be descriptive enough such that a blind individual could use your response as a guide to locate the object. "
+        "If none of the objects are in the image, just respond with 'None'."
+    )
     
     try:
-        detected_items = json.loads(response_content)
-        formatted_items = {}
-        for item, details in detected_items.items():
-            if item.lower() in [t.lower() for t in TRACKED_ITEMS]:
-                formatted_items[item] = {
-                    "position": tuple(details["position"]),
-                    "confidence": details["confidence"],
-                    "timestamp": frame_time,
-                    "description": details.get("description", "")
+        response = openai.ChatCompletion.create(
+            model=MODEL,
+            messages=[
+                {"role": "system", "content": "You are a computer vision assistant."},
+                {"role": "user", "content": prompt},
+                {
+                    "role": "user",
+                    "content": f"Here is the image: data:image/jpeg;base64,{image_base64}"
                 }
-        return formatted_items
-    except json.JSONDecodeError:
-        print(f"Failed to parse JSON response: {response_content}")
+            ],
+            max_tokens=1000
+        )
+
+        response_text = response["choices"][0]["message"]["content"]
+        print(f"GPT-4 Response: {response_text}")
+
+        if response_text.strip().lower() == "none":
+            return {}
+
+        # Parse response into JSON if possible
+        return {"description": response_text, "timestamp": frame_time}
+
+    except Exception as e:
+        print(f"Error calling GPT-4: {e}")
         return {}
 
 def update_json(tracking_data, filename="tracked_items.json"):
+    """Write the tracking data to a JSON file."""
     with open(filename, 'w') as f:
         json.dump(tracking_data, f, indent=2)
 
 def extract_frames_from_screen(interval=3):
+    """Capture frames from the screen and process them using GPT-4."""
     screen_capture = ScreenCapture(region={"top": 100, "left": 100, "width": 640, "height": 480})
     frame_count = 0
-    extracted_frames = []
     tracking_data = {}
     last_update = time.time()
     
@@ -81,25 +85,16 @@ def extract_frames_from_screen(interval=3):
                 current_time = time.time()
                 print(f"Processing frame at {current_time:.2f} seconds...")
 
-                detected_items = detect_items(frame, current_time)
-                frame_data = {
-                    "frame_time": current_time,
-                    "items": detected_items,
-                    "original_frame": frame.copy()
-                }
-
-                extracted_frames.append(frame_data)
+                detected_items = detect_items_with_gpt4(frame, current_time)
                 tracking_data[str(current_time)] = detected_items
 
+                # Update JSON periodically
                 if time.time() - last_update > JSON_UPDATE_INTERVAL:
                     update_json(tracking_data)
                     last_update = time.time()
 
-                for item, details in detected_items.items():
-                    x, y = details["position"]
-                    cv2.putText(frame, f"{item} ({x},{y})", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    cv2.putText(frame, details.get("description", ""), (x, y + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
-                
+                # Display the frame with a label indicating it has been processed
+                cv2.putText(frame, "Frame Processed", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv2.imshow("Screen Capture with Annotations", frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
