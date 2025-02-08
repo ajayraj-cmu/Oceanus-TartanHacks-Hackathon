@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bartimaeus: Empowering Blind Navigation">
-  <meta name="keywords" content="Blind Navigation, Spatial Navigation, YOLO, OpenCV, Audio Cues">
+  <meta name="description" content="Oceanus: Turning the Tide on Darkness">
+  <meta name="keywords" content="Blind Navigation, Spatial Navigation, Comp-Vis Memory Collection, YOLO, OpenCV, Audio Cues">
   <title>Oceanus</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
  <style>
@@ -48,8 +48,8 @@
 <body>
 
   <header class="hero">
-    <h1 class="display-4">Bartimaeus</h1>
-    <p class="lead">Stealing Vision Back</p>
+    <h1 class="display-4">Oceanus</h1>
+    <p class="lead">Turning the Tide on Darkness</p>
     <p class="lead">
       <a href="https://www.linkedin.com/in/prakash-shekhar-422134232">Prakash Shekhar</a>,
       <a href="https://www.linkedin.com/in/srianumakonda">Sri Anumakonda</a>,
@@ -67,9 +67,7 @@
       <br>
       <br>
       <p class="lead">
-        In the Bible, Jesus gave the blind Bartimaeus the ability to see. We want to provide blind individuals with the ability of spatial navigation through the help of an audio agent that gives verbal commands on how to move toward an arbitrarily chosen object. 
-        This interface is run using a phone camera pointed at a field of view, and we allow for auditory cues from the user to identify what object within their peripheral they would like to procure. 
-      </p>
+       In Greek Mythology, Oceanus was the Titan God of the Ocean, one with the ability to fluidly navigate across tides. We at Oceanus desire to provide an interface run locally on a the Meta x Ray-Bans glasses to provide spatial navigation to those with visual impairments and/or Alzheimers.
     </section>
 
     <section>
@@ -82,24 +80,25 @@
   <br>
     <br>
     <p class="lead">Through YOLO and OpenCV (Hugging Face Visual Transformer) we identify the closest object of that type, and enclose it with a bounding box. 
-      Then, we utilize two zero-shot learning models (depth anything and SAM) and a novel mathematical path-finding algorithm we developed to provide audio cues to the user moving through legal motion (paths without obstacles in the way aligned toward the target object/location).</p>
+      Then, we utilize two zero-shot learning models (depth anything and SAM) and a novel mathematical path-finding algorithm we developed to provide audio cues to the user moving through legal motion (paths without obstacles in the way aligned toward the target object/location). With this interface running on the Meta x Ray Bans glasses, we also have developed a memory collection software that captures the last relevant locations that key items were placed by an individual (we use a multi-modal model to help individuals navigate back to where they left these items).</p>
+      
   
     </section>
 <br>
 <section>
   <h2 class="section-title h3">Demo Videos</h2>
-  <p class class="lead">We've performed extensive tests on the accuracy of our model (from a computer vision and trajectory planning perspective) in order to determine its robustness. Below, we display 4 general cases of indoor-assisted navigation.</p>
+  <p class class="lead">We've performed extensive tests on the accuracy of our model (from a computer vision and trajectory planning perspective) in order to determine its robustness. Below, we display 5 general cases of indoor-assisted navigation.</p>
   <br>
   <div class="row">
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Navigation to a water bottle in front of us.</p>
+        <p class="section-title h4">Acquiring Object from Crowded Desk</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/-SC_iIAPzRs" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Finding a chair with a backpack in the middle.</p>
+        <p class="section-title h4">Navigation back to Forgotten Item (Memory Collection).</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/BnmX3R-8sSo" allowfullscreen></iframe>
       </div>
     </div>
@@ -108,43 +107,30 @@
   <div class="row">
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">Finding a chair that isn't in our current frame.</p>
+        <p class="section-title h4">Object is not in Room View.</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/a-LPRGOKDtU" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-md-6 mb-4">
       <div class="thumbnail">
-        <p class="section-title h4">An object is not in our environment.</p>
+        <p class="section-title h4">**Challenge-> Navigation to Forgotten Item Through Crowded Room (Spatial Navigation + Memory Collection).</p>
         <iframe width="100%" height="400" src="https://www.youtube.com/embed/mnuehPIrcvg" allowfullscreen></iframe>
       </div>
     </div>
   </div>
-
-  <h2 class="section-title h3">Challenge Example</h2>
-  <p class="text-center py-4"> We also examine the case where there might be multiple objects that are obstacles towards the goal of reaching for a specific object while also being able to seamlessly perform multiple task finds.</p>
-  <div class="row">
-    <div class="col-md-6 offset-md-3 mb-4">
-      <div class="thumbnail">
-        <iframe width="100%" height="400" src="https://www.youtube.com/embed/sVGbveyNWao" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
-
     <section>
       <h2 class="section-title h3">Acknowledgments</h2>
       <p class="text-center">
-        Special thanks to all contributors and collaborators who helped make Bartimaeus possible.
+        Special thanks to all contributors and collaborators who helped make Oceanus possible.
       </p>
-      <p class="text-center">…to HackPrinceton for allowing us to breathe life into this</p>
+      <p class="text-center">…to TartanHacks for allowing us to breathe life into this</p>
       <p class="text-center">…to Jennifer for inspiring this project</p>
       <p class="text-center">… to the Western Penn. School for the Blind for engaging in a follow-up project</p>
     </section>
   </main>
 
   <footer class="text-center py-4">
-    <p class="mb-0">© 2024 Bartimaeus Project</p>
+    <p class="mb-0">© 2024 Oceanus Project</p>
   </footer>
 
   <!-- Bootstrap JavaScript and dependencies -->
